@@ -11,6 +11,7 @@ It uses the [SpiceyPy package](https://github.com/AndrewAnnex/SpiceyPy) to simul
 * the minute body completes each orbit of the clock once per minute,
 * the hour body completes each orbit of the clock once per hour,
 * the minute and hour bodies are at a Right Ascension of zero degrees at 2001-JAN-01-00:00:00 TDB (TDB => Barycentric Dynamical Time).
+* Cf. Wiki pages [Orbital period](https://en.wikipedia.org/wiki/Orbital_period) and [Orbital speed](https://en.wikipedia.org/wiki/Orbital_speed).
 
 ## Manifest
 
