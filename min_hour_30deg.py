@@ -42,8 +42,20 @@ synthetic trajectories of the MINUTE and HOUR
 """
 import os
 import sys
+
+### SpiceyPy Python module provides an interface to the JPL/NAIF SPICE
+### toolkit cf. http://naif.jpl.nasa.gov/. cf.
+###
+###   https://github.com/AndrewAnnex/SpiceyPy
+###
+### For a description of C versions of SPICE routines, see
+###
+###   https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/index.html
+
 import spiceypy as sp
 
+
+########################################################################
 if "__main__" == __name__:
 
   ### FURNSH (SPICE furnish operation i.e. load kernel ) this script as a kernel,
