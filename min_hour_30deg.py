@@ -75,8 +75,11 @@ if "__main__" == __name__:
   if not os.path.exists(fnClockSpk):
 
     ### Orbital period formula:
+    ###
     ###   T = 2 PI (a*3 / mu))**(1/2)
+    ###
     ### where
+    ###
     ###    T = orbital period
     ###    a = length of semi-major axis
     ###   mu = GM, standard gravitational parameter
@@ -91,11 +94,11 @@ if "__main__" == __name__:
     ####    = ((2 PI) / T)**(1/3)
     ####    = a**(-1/2)
 
-    ### "Period" for minute hand is one hour
+    ### "Period" for minute hand is one hour (sph)
     aMinute = (sph/twopi) ** (2.0/3.0)
     spdMinute = aMinute ** (-0.5)
 
-    ### "Period" for hour hand is half a day
+    ### "Period" for hour hand is half a day (spd / 2)
     aHour = ((spd/2)/twopi) ** (2.0/3.0)
     spdHour = aHour ** (-0.5)
 
@@ -115,17 +118,20 @@ if "__main__" == __name__:
     ### with a speed of spdHour along +Y, i.e. velocty = [0,+spdHour,0]
 
     ### Store such states at (ET0 - one day) and (ET0 + two days)
-    sp.spkw05( handle
-             , iMinute, iClock, 'J2000'
-             , -spd, 2*spd
-             , 'minute_orbit'
-             , 1.0, 2
-             , [[aMinute,0.,0.,  0.,spdMinute,0.]
-               ,[aMinute,0.,0.,  0.,spdMinute,0.]
+
+    ### - First segment, MINUTE hand
+    sp.spkw05( handle                              ### SPK handle
+             , iMinute, iClock, 'J2000'            ### MINUTE and CLOCK IDs
+             , -spd, 2*spd                         ### Segment epoch limits
+             , 'minute_orbit'                      ### Segment identifier
+             , 1.0, 2                              ### mu (GM), epoch count
+             , [[aMinute,0.,0.,  0.,spdMinute,0.]  ### First epoch state
+               ,[aMinute,0.,0.,  0.,spdMinute,0.]  ### Second epoch state
                ]
-             , [-spd,2*spd]
+             , [-spd,2*spd]                        ### epochs
              )
 
+    ### - Second segment, HOUR hand
     sp.spkw05( handle
              , iHour, iClock, 'J2000'
              , -spd, 2*spd

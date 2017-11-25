@@ -16,7 +16,7 @@ The Python script, min_hour_30deg.py, uses the [SpiceyPy package](https://github
 
 * Script to verify there are 44 occurences per day of times when hour and minute hand are 30degrees apart.
 * Usage:  python min_hour_30deg.py [--debug]
-* This script uses the [SpiceyPy package](https://github.com/AndrewAnnex/SpiceyPy) to model the MINUTE and HOUR hands as bodies orbiting a CLOCK body; the angle between the minute and hour hands are mmodeled as the [phase angle](https://en.wikipedia.org/wiki/Phase_angle_(astronomy)) with the CLOCK as the target body, the MINUTE body as the illuminating body, and the HOUR body as the observing body; the phase angle is the angle between the [CLOCK=>MINUTE] and [CLOCK=>HOUR] vectors.
+* This script uses the [SpiceyPy package](https://github.com/AndrewAnnex/SpiceyPy) to model the MINUTE and HOUR hands as bodies orbiting a CLOCK body; the angle between the minute and hour hands are modeled as the [phase angle](https://en.wikipedia.org/wiki/Phase_angle_(astronomy)) with the CLOCK as the target body, the MINUTE body as the illuminating body, and the HOUR body as the observing body; the phase angle is the angle between the [CLOCK=>MINUTE] and [CLOCK=>HOUR] vectors.
 
 ### test_output.txt
 
