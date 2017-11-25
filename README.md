@@ -3,3 +3,5 @@
 The original question is:
 
 How many times are the minute hand and hour hands are [sic] at 30 degrees in a day?
+
+The Python script, min_hour_30deg.py, 
