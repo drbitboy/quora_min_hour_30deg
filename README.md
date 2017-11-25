@@ -1,4 +1,4 @@
-# Programmatic solution to question from Quora.com about minut and hour hands on a clock.
+# Programmatic solution to question from Quora.com about minute and hour hands on a clock.
 
 The original question is:
 
@@ -9,3 +9,24 @@ The Python script, min_hour_30deg.py, uses the [SpiceyPy package](https://github
 * the minute body completes each orbit of the clock once per minute,
 * the hour body completes each orbit of the clock once per hour,
 * the minute and hour bodies are at a Right Ascension of zero degrees at 2001-JAN-01-00:00:00 TDB (TDB => Barycentric Dynamical Time).
+
+## Manifest
+====
+
+min_hour_30deg.py
+
+* Script to verify there are 44 occurences per day of times when hour and minute hand are 30degrees apart.
+* Usage:  python min_hour_30deg.py [--debug]
+
+test_output.txt
+
+* Output of script, with debugging turned on
+
+min_hour_clock.bsp
+
+* [NAIF/JPL SPICE](http://naif.jpl.nasa.gov) SP-Kernel containing synthetic trajectories of MINUTE and HOUR bodies that orbit CLOCK body
+* Script will recreate this file in the current working directory if it does not exist
+
+README.md
+
+* This file

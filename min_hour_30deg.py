@@ -1,11 +1,39 @@
 """
+Usage:
+
+  [rm min_hour_clock.bsp]
+
+  python min_hour_30deg.py [--debug] [other kernels]
+
+The Python script, min_hour_30deg.py, uses the SpiceyPy package to simulate a
+clock using three synthetic bodies: a central body; two bodies orbiting the
+central body. The central body represents the clock; the two bodies represent
+the minute and hour hands. The trajectories of the minute and hour bodies are
+circular orbits around the clock body such that
+
+* the minute body completes each orbit of the clock once per minute,
+* the hour body completes each orbit of the clock once per hour,
+* the minute and hour bodies are at a Right Ascension of zero degrees at
+  2001-JAN-01-00:00:00 TDB (TDB => Barycentric Dynamical Time).
+
+
+
+
+This Python script also serves as its own SPICE Text-Kernel (TK) to define
+parameters used by the script.
+
+The NAIF_BODY_CODE and NAIF_BODY_NAME assigments map SPICE names (e.g. CLOCK)
+to SPICE IDs (e.g. 2000000) for three synthetic bodies:  CLOCK, MINUTE, HOUR.
+
+The ET0 assignment is the zero-TDB  time of the J2000 epoch.
+
+The the CLOCKSPK assignment provides the name of the SP-Kernel (SPK) with
+synthetic trajectories of the MINUTE and HOUR
+
 \begindata
+
   NAIF_BODY_CODE += ( 2000000,  2000060, 2003600 )
   NAIF_BODY_NAME += ( 'CLOCK', 'MINUTE',  'HOUR' )
-
-  BODY2000000_POLE_RA  = ( 270 0 0 )
-  BODY2000000_POLE_DEC = ( 90. 0 0 )
-  BODY2000000_POLE_PM  = ( 0. 0 0 )
 
   ET0 = @2000-01-01-00:00:00.000
 
@@ -18,14 +46,16 @@ import spiceypy as sp
 
 if "__main__" == __name__:
 
-  ### FURNSH (SPICE furnish i.e. load) this script as a kernel, as well as
-  ### any command-line arguments
+  ### FURNSH (SPICE furnish operation i.e. load kernel ) this script as a kernel,
+  ### as well as any command-line arguments
+  ### - skip any argument th at is --debug
   map(sp.furnsh,[arg for arg in sys.argv if arg != '--debug'])
+
+  ### Set debug flag to True if --debug was an argument, else to False
   doDebug = '--debug' in sys.argv
 
-  ### SPICE names and IDs of Clock, minute hand, hour hand
+  ### SPICE names of Clock, minute hand, hour hand
   sClock, sMinute, sHour = sNames = "CLOCK MINUTE HOUR".split()
-  iClock, iMinute, iHour = iIds = map(sp.bods2c,sNames)
 
   ### SPICE works in seconds; get seconds per minute, per hour, per day
   spm = sp.convrt(1.0, 'minutes', 'seconds')
@@ -68,6 +98,9 @@ if "__main__" == __name__:
     ### "Period" for hour hand is half a day
     aHour = ((spd/2)/twopi) ** (2.0/3.0)
     spdHour = aHour ** (-0.5)
+
+    ### Get SPICE IDs of clock, and of minute and hour hands
+    iClock, iMinute, iHour = iIds = map(sp.bods2c,sNames)
  
     ### Open new SP-Kernel (SPK; ephemerides of MINUTE and HOUR wrt CLOCK)
     handle = sp.spkopn(fnClockSpk, 'clock_simulation', 0)
@@ -144,6 +177,8 @@ if "__main__" == __name__:
     et += halfHour
     iPass += 1
 
+  print('SP-Kernel passed {} half-hour tests'.format(iPass))
+
   ### End of test
   ######################################################################
 
@@ -157,12 +192,13 @@ if "__main__" == __name__:
   etStart,etStop = et0 - 10e-3, et0 + spd - 10e-3
   sp.wninsd(etStart, etStop, cnfine)
 
-  ### Find local minima
+  ### Find local minima using SPICE Geometry Finder
   sp.gfpa(sClock, sMinute, "NONE",  sHour, "LOCMIN", 1e-6
          , 0.0, spm, 6000, cnfine, result)
 
   ### Confirm that 22 minima were found
   assert 22 == sp.wncard(result)
+  print('SP-Kernel passed [{}-alignments per day] test'.format(sp.wncard(result)))
 
   ### Optional logging
   if doDebug:
@@ -182,6 +218,7 @@ if "__main__" == __name__:
 
   ### Confirm that 23 minima were found
   assert 23 == sp.wncard(result)
+  print('SP-Kernel passed [{}-alignments per (day+20ms)] test'.format(sp.wncard(result)))
 
   ### Optional logging
   if doDebug:
@@ -198,8 +235,9 @@ if "__main__" == __name__:
   sp.gfpa(sClock, sMinute, "NONE",  sHour, "=", 30/dpr
          , 0.0, spm, 6000, cnfine, result)
 
-  ### Confirm that 23 minima were found
+  ### Confirm that 44 matching events were found
   assert 44 == sp.wncard(result)
+  print('SP-Kernel passed [{}-30-deg-alignments per (day+20ms)] test'.format(sp.wncard(result)))
 
   ### Optional logging
   if doDebug:
