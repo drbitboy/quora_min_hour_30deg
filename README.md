@@ -11,22 +11,21 @@ The Python script, min_hour_30deg.py, uses the [SpiceyPy package](https://github
 * the minute and hour bodies are at a Right Ascension of zero degrees at 2001-JAN-01-00:00:00 TDB (TDB => Barycentric Dynamical Time).
 
 ## Manifest
-====
 
-min_hour_30deg.py
+### min_hour_30deg.py
 
 * Script to verify there are 44 occurences per day of times when hour and minute hand are 30degrees apart.
 * Usage:  python min_hour_30deg.py [--debug]
 
-test_output.txt
+### test_output.txt
 
 * Output of script, with debugging turned on
 
-min_hour_clock.bsp
+### min_hour_clock.bsp
 
 * [NAIF/JPL SPICE](http://naif.jpl.nasa.gov) SP-Kernel containing synthetic trajectories of MINUTE and HOUR bodies that orbit CLOCK body
 * Script will recreate this file in the current working directory if it does not exist
 
-README.md
+### README.md
 
 * This file
